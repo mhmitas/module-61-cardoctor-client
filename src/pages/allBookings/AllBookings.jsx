@@ -3,14 +3,16 @@ import { ServerContext } from '../../providers/ServerProvider';
 import { AuthContext } from '../../providers/AuthProviders';
 import BookingTableRow from './BookingTableRow';
 import toast from 'react-hot-toast';
+import useAuth from '../../hooks/useAuth';
 
 const AllBookings = () => {
     const { serverLink } = useContext(ServerContext)
-    const { user } = useContext(AuthContext)
+    // const { user } = useContext(AuthContext)
+    const { user } = useAuth()
 
     const [bookings, setBookings] = useState([])
     useEffect(() => {
-        fetch(`${serverLink}/bookings?email=${user?.email}`)
+        fetch(`${serverLink}/bookings?email=${user?.email}`, { credentials: 'include' })
             .then(res => res.json())
             .then(data => {
                 setBookings(data)
